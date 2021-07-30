@@ -1,14 +1,14 @@
-const Color = artifacts.require('./Color.sol')
+const Planet = artifacts.require('./Planet.sol')
 
 require('chai')
     .use(require('chai-as-promised'))
     .should()
 
-contract('Color', (accounts) => {
+contract('Planet', (accounts) => {
     let contract
 
     before(async () => {
-        contract = await Color.deployed()
+        contract = await Planet.deployed()
     })
 
     describe('deployment', async () => {
@@ -22,12 +22,12 @@ contract('Color', (accounts) => {
 
         it('has a name', async () => {
             const name = await contract.name()
-            assert.equal(name, 'Color')
+            assert.equal(name, 'Planet')
         })
 
         it('has a symbol', async () => {
             const symbol = await contract.symbol()
-            assert.equal(symbol, 'COLOR')
+            assert.equal(symbol, 'PLANET')
         })
 
     })
@@ -44,25 +44,25 @@ contract('Color', (accounts) => {
             assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
             assert.equal(event.to, accounts[0], 'to is correct')
 
-            // FAILURE: cannot mint same color twice
+            // FAILURE: cannot mint same planet twice
             await contract.mint('#EC058E').should.be.rejected;
         })
     })
 
     describe('indexing', async () => {
-        it('lists colors', async () => {
+        it('lists planets', async () => {
             // Mint 3 more tokens
             await contract.mint('#5386E4')
             await contract.mint('#FFFFFF')
             await contract.mint('#000000')
             const totalSupply = await contract.totalSupply()
 
-            let color
+            let planet
             let result = []
 
             for (let i = 0; i < totalSupply; i++) {
-                color = await contract.colors(i)
-                result.push(color)
+                planet = await contract.planets(i)
+                result.push(planet)
             }
 
             let expected = ['#EC058E', '#5386E4', '#FFFFFF', '#000000']

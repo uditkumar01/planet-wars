@@ -1,5 +1,5 @@
 {
-  "contractName": "Color",
+  "contractName": "Planet",
   "abi": [
     {
       "constant": true,
