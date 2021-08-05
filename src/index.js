@@ -1,12 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from "./App/App";
 import reportWebVitals from './reportWebVitals';
+import { ColorModeScript, ChakraProvider } from "@chakra-ui/react";
+import { theme } from "./theme";
+import * as dotenv from "dotenv";
+import { ChainId, DAppProvider } from '@usedapp/core';
+
+dotenv.config();
+
+const INFURA_API_KEY = process.env.INFURA_API_KEY;
+
+// const config = {
+//   readOnlyChainId: ChainId.Ropsten,
+//   readOnlyUrls: {
+//     [ChainId.Ropsten]: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`,
+//   },
+// }
+console.log(process.env.PORT);
+
+const config = {
+  readOnlyChainId: ChainId.Localhost,
+  readOnlyUrls: {
+    [ChainId.Localhost]: `localhost:8545`,
+  },
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <DAppProvider config={config}>
+      <ChakraProvider resetCSS theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </ChakraProvider>
+    </DAppProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
