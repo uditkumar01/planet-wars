@@ -14,8 +14,14 @@ contract Planet is ERC721 {
         // console a ascii of a rocket
     }
 
+    // returning total planets
     function getTotalNoOfPlanets() public view returns (uint256) {
         return planets.length;
+    }
+
+    // returning the list of planets
+    function getListOfPlanets() public view returns (string[] memory) {
+        return planets;
     }
 
     // minting a new planet

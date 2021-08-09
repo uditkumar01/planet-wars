@@ -12,7 +12,6 @@ import {
 
 export function Navbar() {
   const bg = useColorModeValue("white", "gray.800");
-
   return (
     <>
       <chakra.header
