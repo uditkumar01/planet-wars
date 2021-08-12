@@ -1,0 +1,154 @@
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  Flex,
+  Heading,
+  Spinner,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  Th,
+  Badge,
+} from "@chakra-ui/react";
+import { StaticJsonRpcProvider } from "@ethersproject/providers";
+import { useState } from "react";
+import { IoMdPlanet } from "react-icons/all";
+import { PlanetDetails } from "../../App/App.types";
+
+interface MintModalProps {
+  generating: boolean;
+  planetDetails: PlanetDetails | null;
+  regenerationHandler: () => void;
+  ipfsUploadHandler: () => Promise<string | null>;
+  onClick: () => void;
+  ensProvider:StaticJsonRpcProvider;
+  provider: any;
+  writeContracts: any;
+  address: string;
+}
+
+export function MintModal({
+  generating,
+  planetDetails,
+  regenerationHandler,
+  ipfsUploadHandler,
+  onClick,
+  ensProvider,
+  provider,
+  writeContracts,
+  address
+}:MintModalProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [inProgress, setInProgress] = useState(false);
+  const [ipfsHash, setIpfsHash] = useState<string|null>(null);
+  async function mintStateHandler() {
+    setInProgress(true);
+    if(!ipfsHash) {
+      const hash = await ipfsUploadHandler();
+      setIpfsHash(hash);
+    } else {
+      await writeContracts.YourCollectible.mintItem(address, ipfsHash);
+    }
+    setInProgress(false);
+  }
+  return (
+    <>
+      <Button
+        colorScheme="teal"
+        display="flex"
+        justifyContent="space-between"
+        bg="brand.500"
+        _hover={{ bg: "brand.600" }}
+        w="112px"
+        position="fixed"
+        bottom="30px"
+        left="calc(50vw - 56px)"
+        size="lg"
+        onClick={() => {
+          onOpen();
+          onClick();
+        }}
+      >
+        Mint <IoMdPlanet style={{ height: "30px" }} />
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Mint Planet</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {generating ? (
+              <Flex h="355px" justifyContent="center" alignItems="center">
+                <Spinner size="xl" />
+              </Flex>
+            ) : (
+              <Flex
+                minH="355px"
+                mb="1rem"
+                flexDir="column"
+                alignItems="center"
+              >
+                <Flex
+                  bg={`url(${planetDetails?.imageURL})`}
+                  h="250px"
+                  w="250px"
+                  bgSize="cover"
+                  bgPos="center"
+                  borderRadius="50%"
+                ></Flex>
+                <Heading textAlign="center" m="2rem 0" fontSize="1.9rem">
+                  {planetDetails?.planetName.split("-").join(" ")}
+                </Heading>
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>Property</Th>
+                      <Th textAlign="right">Value</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {planetDetails?.properties.map(({name,value,unit})=>{return <Tr>
+                      <Td>{name}</Td>
+                      <Td textAlign="right">
+                        <Badge fontSize="0.76rem" variant="solid" colorScheme="green">
+                          {value} {unit}
+                        </Badge>
+                      </Td>
+                    </Tr>})}
+                  </Tbody>
+                </Table>
+              </Flex>
+            )}
+          </ModalBody>
+
+          <ModalFooter>
+            <Flex w="100%" justifyContent="space-between">
+              <Button
+                colorScheme="blue"
+                variant="outline"
+                mr={3}
+                onClick={regenerationHandler}
+                isLoading={generating}
+              >
+                Regenerate
+              </Button>
+              <Button colorScheme="blue" isLoading={inProgress} onClick={mintStateHandler}>
+                Mint Planet
+              </Button>
+            </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
