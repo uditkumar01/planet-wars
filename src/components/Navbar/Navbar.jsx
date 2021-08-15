@@ -60,7 +60,13 @@ function Logo({ width }) {
   );
 }
 
-export function Navbar({ address, yourBalance, loadWeb3Modal }) {
+export function Navbar({
+  address,
+  yourBalance,
+  loadWeb3Modal,
+  logoutOfWeb3Modal,
+  web3Modal,
+}) {
   const bg = useColorModeValue("white", "gray.800");
   return (
     <>
@@ -111,17 +117,25 @@ export function Navbar({ address, yourBalance, loadWeb3Modal }) {
               display={{ base: "none", md: "inline-flex" }}
             ></HStack>
 
-            {address ? (
-              <AccountModel address={address} yourBalance={yourBalance} />
+            {web3Modal ? (
+              web3Modal.cachedProvider ? (
+                <AccountModel
+                  address={address}
+                  yourBalance={yourBalance}
+                  logoutOfWeb3Modal={logoutOfWeb3Modal}
+                />
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  bg="brand.500"
+                  _hover={{ bg: "brand.600" }}
+                  onClick={loadWeb3Modal}
+                >
+                  Connect
+                </Button>
+              )
             ) : (
-              <Button
-                colorScheme="teal"
-                bg="brand.500"
-                _hover={{ bg: "brand.600" }}
-                onClick={loadWeb3Modal}
-              >
-                Connect
-              </Button>
+              ""
             )}
           </HStack>
         </Flex>

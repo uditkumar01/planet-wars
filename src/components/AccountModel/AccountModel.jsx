@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import QRCode from "qrcode.react";
 
-export function AccountModel({ address, yourBalance }) {
+export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   return (
@@ -75,6 +75,7 @@ export function AccountModel({ address, yourBalance }) {
               </Table>
               <Flex>
                 <Button
+                  mr="1rem"
                   onClick={() => {
                     if (address) {
                       navigator.clipboard.writeText(address);
@@ -85,6 +86,13 @@ export function AccountModel({ address, yourBalance }) {
                   }}
                 >
                   Copy Address
+                </Button>
+                <Button
+                  onClick={() => {
+                    logoutOfWeb3Modal();
+                  }}
+                >
+                  logout
                 </Button>
               </Flex>
             </Flex>

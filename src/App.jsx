@@ -488,7 +488,9 @@ function App(props) {
             <Navbar
               address={address}
               yourBalance={yourLocalBalance && formatEther(yourLocalBalance)}
+              web3Modal={web3Modal}
               loadWeb3Modal={loadWeb3Modal}
+              logoutOfWeb3Modal={logoutOfWeb3Modal}
             />
             {/* {accountState.account} */}
             <MintModal
