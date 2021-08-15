@@ -29,7 +29,6 @@ import {
   useOnBlock,
   useUserProvider,
 } from "./hooks";
-import { matchSellOrder, prepareMatchingOrder } from "./rarible/createOrders";
 import { create } from "ipfs-http-client";
 import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { Layout } from "./components/Layout/Layout";
@@ -68,24 +67,6 @@ const targetNetwork = NETWORKS.ropsten; // <------- select your target frontend 
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
-
-// EXAMPLE STARTING JSON:
-const STARTING_JSON = {
-  description: "It's actually a bison?",
-  external_url: "https://austingriffith.com/portfolio/paintings/", // <-- this can link to a page for the specific file too
-  image: "https://austingriffith.com/images/paintings/buffalo.jpg",
-  name: "Buffalo",
-  attributes: [
-    {
-      trait_type: "BackgroundColor",
-      value: "green",
-    },
-    {
-      trait_type: "Eyes",
-      value: "googly",
-    },
-  ],
-};
 
 // helper function to "Get" from IPFS
 // you usually go content.toString() after this...
@@ -454,21 +435,7 @@ function App(props) {
       </div>
     );
   }
-
-  const [yourJSON, setYourJSON] = useState(STARTING_JSON);
-  const [sending, setSending] = useState();
-  const [ipfsHash, setIpfsHash] = useState();
-  const [ipfsDownHash, setIpfsDownHash] = useState();
-  const [collectionContract, setCollectionContract] = useState();
-  const [tokenId, setTokenId] = useState();
-
-  const [downloading, setDownloading] = useState();
-  const [ipfsContent, setIpfsContent] = useState();
-
-  const [sellOrderContent, setSellOrderContent] = useState();
-
-  const [transferToAddresses, setTransferToAddresses] = useState({});
-  const [approveAddresses, setApproveAddresses] = useState({});
+  
   const [planetDetails, setPlanetDetails] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [uploading, setUploading] = useState(false);
