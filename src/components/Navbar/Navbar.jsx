@@ -98,9 +98,9 @@ export function Navbar({ address, yourBalance, loadWeb3Modal }) {
               alignItems="center"
               fontSize="xl"
               fontWeight="medium"
-              ml="2"
+              ml="1rem"
             >
-              <Logo width={200} />
+              <Logo width={150} />
             </chakra.h1>
           </Flex>
           <HStack display="flex" alignItems="center" spacing={1}>

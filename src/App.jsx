@@ -325,7 +325,10 @@ function App(props) {
   //   yourMainnetBalance,
   //   readContracts,
   //   writeContracts,
-  //   mainnetDAIContract,
+  //   mainnetDAIContract,ute, setRoute] = useState();
+  // useEffect(() => {
+  //   setRoute(window.location.pathname);
+  // }, [setRoute]);
   // ]);
 
   let networkDisplay = "";
@@ -414,10 +417,10 @@ function App(props) {
     }
   }, [loadWeb3Modal]);
 
-  const [route, setRoute] = useState();
-  useEffect(() => {
-    setRoute(window.location.pathname);
-  }, [setRoute]);
+  // const [route, setRoute] = useState();
+  // useEffect(() => {
+  //   setRoute(window.location.pathname);
+  // }, [setRoute]);
 
   let faucetHint = "";
   const faucetAvailable =

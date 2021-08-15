@@ -10,16 +10,16 @@ import {
   Table,
   Td,
   Th,
-  Thead,
   Tbody,
   Tr,
   useDisclosure,
-  Tfoot,
+  useToast,
 } from "@chakra-ui/react";
 import QRCode from "qrcode.react";
 
 export function AccountModel({ address, yourBalance }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   return (
     <>
       <Button
@@ -74,7 +74,16 @@ export function AccountModel({ address, yourBalance }) {
                 <br />
               </Table>
               <Flex>
-                <Button>
+                <Button
+                  onClick={() => {
+                    if (address) {
+                      navigator.clipboard.writeText(address);
+                      toast.success("Copied to clipboard");
+                    } else {
+                      toast.error("No address");
+                    }
+                  }}
+                >
                   Copy Address
                 </Button>
               </Flex>
