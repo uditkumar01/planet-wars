@@ -124,6 +124,13 @@ const web3Modal = new Web3Modal({
       },
     },
   },
+  theme: {
+    background: "#2d3748",
+    main: "rgb(199, 199, 199)",
+    secondary: "rgb(136, 136, 136)",
+    border: "rgba(195, 195, 195, 0.14)",
+    hover: "rgb(16, 26, 32)"
+  }
 });
 
 const logoutOfWeb3Modal = async () => {
