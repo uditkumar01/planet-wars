@@ -30,11 +30,12 @@ import {
   useUserProvider,
 } from "./hooks";
 import { create } from "ipfs-http-client";
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
 import { Layout } from "./components/Layout/Layout";
 import { MintModal } from "./components/MintModal/MintModal";
 import axios from "axios";
 import { Navbar } from "./components/Navbar/Navbar";
+import { Planet3D } from "./components/Planet3D/Planet3D";
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
 
@@ -129,8 +130,8 @@ const web3Modal = new Web3Modal({
     main: "rgb(199, 199, 199)",
     secondary: "rgb(136, 136, 136)",
     border: "rgba(195, 195, 195, 0.14)",
-    hover: "rgb(16, 26, 32)"
-  }
+    hover: "rgb(16, 26, 32)",
+  },
 });
 
 const logoutOfWeb3Modal = async () => {
@@ -442,7 +443,7 @@ function App(props) {
       </div>
     );
   }
-  
+
   const [planetDetails, setPlanetDetails] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -523,17 +524,19 @@ function App(props) {
                 if (symbol?.toUpperCase() === "PWS") {
                   return (
                     <Flex justifyContent="center" minH="300px">
-                      <Flex
+                      {/* <Flex
                         bg={`url(${imageURL})`}
                         h="250px"
                         w="250px"
                         bgSize="cover"
                         bgPos="center"
                         borderRadius="50%"
-                      ></Flex>
+                      ></Flex> */}
+                      <Planet3D planetLink={imageURL} />
                     </Flex>
                   );
                 }
+                return "";
               })}
             </SimpleGrid>
           </Layout>

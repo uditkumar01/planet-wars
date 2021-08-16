@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoMdPlanet } from "react-icons/all";
+import { Planet3D } from "../Planet3D/Planet3D";
 
 export function MintModal({
   generating,
@@ -53,11 +54,13 @@ export function MintModal({
         colorScheme="teal"
         display="flex"
         justifyContent="space-between"
-        bg="brand.500"
-        _hover={{ bg: "brand.600" }}
+        bg="brand.600"
+        color="black.1000"
+        _hover={{ bg: "brand.500" }}
         w="112px"
         position="fixed"
         bottom="30px"
+        zIndex="1000"
         left="calc(50vw - 56px)"
         size="lg"
         onClick={() => {
@@ -80,14 +83,15 @@ export function MintModal({
               </Flex>
             ) : (
               <Flex minH="355px" mb="1rem" flexDir="column" alignItems="center">
-                <Flex
+                {/* <Flex
                   bg={`url(${planetDetails?.imageURL})`}
                   h="250px"
                   w="250px"
                   bgSize="cover"
                   bgPos="center"
                   borderRadius="50%"
-                ></Flex>
+                ></Flex> */}
+                <Planet3D planetLink={planetDetails?.imageURL} />
                 <Heading
                   textAlign="center"
                   m="2rem 0"

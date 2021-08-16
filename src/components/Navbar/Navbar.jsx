@@ -67,11 +67,11 @@ export function Navbar({
   logoutOfWeb3Modal,
   web3Modal,
 }) {
-  const bg = useColorModeValue("white", "gray.800");
+  // const bg = useColorModeValue("white", "gray.800");
   return (
     <>
       <chakra.header
-        bg={bg}
+        bg={"transparent"}
         w="full"
         px={{ base: 2, sm: 4 }}
         py={4}
@@ -127,8 +127,9 @@ export function Navbar({
               ) : (
                 <Button
                   colorScheme="teal"
-                  bg="brand.500"
-                  _hover={{ bg: "brand.600" }}
+                  bg="brand.600"
+                  color="black.1000"
+                  _hover={{ bg: "brand.500" }}
                   onClick={loadWeb3Modal}
                 >
                   Connect

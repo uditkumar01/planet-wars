@@ -15,6 +15,7 @@
     "@ethersproject/solidity": "^5.4.0",
     "@ethersproject/units": "^5.4.0",
     "@ramp-network/ramp-instant-sdk": "^2.4.8",
+    "@react-three/fiber": "^7.0.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -38,6 +39,8 @@
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "three": "^0.131.3",
+    "tsparticles": "^1.33.3",
     "web-vitals": "^1.0.1",
     "web3modal": "^1.9.4"
   },

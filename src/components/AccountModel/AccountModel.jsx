@@ -23,10 +23,12 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
   return (
     <>
       <Button
+        
         onClick={onOpen}
         colorScheme="teal"
-        bg="brand.500"
-        _hover={{ bg: "brand.600" }}
+        bg="brand.600"
+        color="black.1000"
+        _hover={{ bg: "brand.500" }}
       >
         Account
       </Button>
@@ -45,7 +47,7 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
               <Flex h="200px" w="200px" bgSize="cover" bgPos="center">
                 <QRCode
                   size="200"
-                  bgColor="#2d3748"
+                  bgColor="black.1000"
                   fgColor="cyan"
                   includeMargin={true}
                   value="http://facebook.github.io/react/"
@@ -75,6 +77,9 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
               </Table>
               <Flex>
                 <Button
+                  bg="brand.600"
+                  color="black.1000"
+                  _hover={{ bg: "brand.500" }}
                   mr="1rem"
                   onClick={() => {
                     if (address) {
@@ -88,6 +93,9 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
                   Copy Address
                 </Button>
                 <Button
+                  bg="brand.600"
+                  color="black.1000"
+                  _hover={{ bg: "brand.500" }}
                   onClick={() => {
                     logoutOfWeb3Modal();
                   }}
