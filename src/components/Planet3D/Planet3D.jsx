@@ -2,7 +2,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useEffect, useMemo, useRef } from "react";
 
-const Sphere = ({ link }) => {
+const Sphere = ({ link, scale }) => {
   const texture = useMemo(() => new THREE.TextureLoader().load(link));
   const ref = useRef();
 
@@ -20,7 +20,7 @@ const Sphere = ({ link }) => {
 
   return (
     <mesh ref={ref}>
-      <sphereBufferGeometry args={[2, 200, 200]} attach="geometry" />
+      <sphereBufferGeometry args={[scale, 200, 200]} attach="geometry" />
       <meshBasicMaterial
         attach="material"
         color="#ffffff"
@@ -31,10 +31,10 @@ const Sphere = ({ link }) => {
   );
 };
 
-export function Planet3D({ planetLink }) {
+export function Planet3D({ planetLink, scale=1 }) {
   return (
     <Canvas>
-      <Sphere link={planetLink} />
+      <Sphere link={planetLink} scale={scale} />
     </Canvas>
   );
 }

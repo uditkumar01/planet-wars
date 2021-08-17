@@ -75,7 +75,7 @@ export function MintModal({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="whiteAlpha.700">Mint Planet</ModalHeader>
-          <ModalCloseButton color="whiteAlpha.400"/>
+          <ModalCloseButton color="whiteAlpha.400" />
           <ModalBody>
             {generating ? (
               <Flex h="355px" justifyContent="center" alignItems="center">
@@ -83,15 +83,17 @@ export function MintModal({
               </Flex>
             ) : (
               <Flex minH="355px" mb="1rem" flexDir="column" alignItems="center">
-                {/* <Flex
-                  bg={`url(${planetDetails?.imageURL})`}
-                  h="250px"
-                  w="250px"
-                  bgSize="cover"
-                  bgPos="center"
-                  borderRadius="50%"
-                ></Flex> */}
-                <Planet3D planetLink={planetDetails?.imageURL} />
+                {/*
+                  <Flex
+                    bg={`url(${planetDetails?.imageURL})`}
+                    h="250px"
+                    w="250px"
+                    bgSize="cover"
+                    bgPos="center"
+                    borderRadius="50%"
+                  ></Flex>
+                */}
+                <Planet3D scale={3} planetLink={planetDetails?.imageURL} />
                 <Heading
                   textAlign="center"
                   m="2rem 0"
@@ -147,7 +149,7 @@ export function MintModal({
                 isLoading={inProgress || generating}
                 onClick={mintStateHandler}
               >
-                {ipfsHash?"Mint Planet":"IPFS Upload"}
+                {ipfsHash ? "Mint Planet" : "IPFS Upload"}
               </Button>
             </Flex>
           </ModalFooter>

@@ -1,7 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import { gql, useQuery } from "@apollo/client";
-import { Button, Input, Table, Typography } from "antd";
-import "antd/dist/antd.css";
 import GraphiQL from "graphiql";
 import "graphiql/graphiql.min.css";
 import fetch from "isomorphic-fetch";
@@ -22,7 +20,7 @@ function Subgraph(props) {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(graphQLParams),
-    }).then(response => response.json());
+    }).then((response) => response.json());
   }
 
   const EXAMPLE_GRAPHQL = `
@@ -54,20 +52,28 @@ function Subgraph(props) {
     {
       title: "Sender",
       key: "id",
-      render: record => <Address value={record.sender.id} ensProvider={props.mainnetProvider} fontSize={16} />,
+      render: (record) => (
+        <Address
+          value={record.sender.id}
+          ensProvider={props.mainnetProvider}
+          fontSize={16}
+        />
+      ),
     },
     {
       title: "createdAt",
       key: "createdAt",
       dataIndex: "createdAt",
-      render: d => new Date(d * 1000).toISOString(),
+      render: (d) => new Date(d * 1000).toISOString(),
     },
   ];
 
   const [newPurpose, setNewPurpose] = useState("loading...");
 
   const deployWarning = (
-    <div style={{ marginTop: 8, padding: 8 }}>Warning: 🤔 Have you deployed your subgraph yet?</div>
+    <div style={{ marginTop: 8, padding: 8 }}>
+      Warning: 🤔 Have you deployed your subgraph yet?
+    </div>
   );
 
   return (
@@ -81,11 +87,19 @@ function Subgraph(props) {
       </div>
       <div style={{ margin: "auto", marginTop: 32 }}>
         Instead, you can use{" "}
-        <a href="https://thegraph.com/docs/introduction" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://thegraph.com/docs/introduction"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           The Graph
         </a>{" "}
         with 🏗 scaffold-eth (
-        <a href="https://youtu.be/T5ylzOTkn-Q" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://youtu.be/T5ylzOTkn-Q"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           learn more
         </a>
         ):
@@ -108,7 +122,11 @@ function Subgraph(props) {
         <span style={{ marginLeft: 4 }}>
           {" "}
           (requires{" "}
-          <a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.docker.com/products/docker-desktop"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {" "}
             Docker
           </a>
@@ -140,7 +158,11 @@ function Subgraph(props) {
           packages/subgraph/src
         </span>
         (learn more about subgraph definition{" "}
-        <a href="https://thegraph.com/docs/define-a-subgraph" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://thegraph.com/docs/define-a-subgraph"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           here
         </a>
         )
@@ -157,7 +179,7 @@ function Subgraph(props) {
       <div style={{ width: 780, margin: "auto", paddingBottom: 64 }}>
         <div style={{ margin: 32, textAlign: "right" }}>
           <Input
-            onChange={e => {
+            onChange={(e) => {
               setNewPurpose(e.target.value);
             }}
           />
@@ -165,7 +187,9 @@ function Subgraph(props) {
             onClick={() => {
               console.log("newPurpose", newPurpose);
               /* look how you call setPurpose on your contract: */
-              props.tx(props.writeContracts.YourContract.setPurpose(newPurpose));
+              props.tx(
+                props.writeContracts.YourContract.setPurpose(newPurpose)
+              );
             }}
           >
             Set Purpose
@@ -173,13 +197,28 @@ function Subgraph(props) {
         </div>
 
         {data ? (
-          <Table dataSource={data.purposes} columns={purposeColumns} rowKey="id" />
+          <Table
+            dataSource={data.purposes}
+            columns={purposeColumns}
+            rowKey="id"
+          />
         ) : (
           <Typography>{loading ? "Loading..." : deployWarning}</Typography>
         )}
 
-        <div style={{ margin: 32, height: 400, border: "1px solid #888888", textAlign: "left" }}>
-          <GraphiQL fetcher={graphQLFetcher} docExplorerOpen query={EXAMPLE_GRAPHQL} />
+        <div
+          style={{
+            margin: 32,
+            height: 400,
+            border: "1px solid #888888",
+            textAlign: "left",
+          }}
+        >
+          <GraphiQL
+            fetcher={graphQLFetcher}
+            docExplorerOpen
+            query={EXAMPLE_GRAPHQL}
+          />
         </div>
       </div>
 

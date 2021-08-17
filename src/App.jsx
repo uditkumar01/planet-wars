@@ -1,13 +1,8 @@
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { formatEther, parseEther } from "@ethersproject/units";
-import { BigNumber } from "@ethersproject/bignumber";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Button, Card, Col, Input, List, Menu, Row } from "antd";
-import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
 import React, { useCallback, useEffect, useState } from "react";
-import ReactJson from "react-json-view";
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "./App.css";
 import {
@@ -30,13 +25,20 @@ import {
   useUserProvider,
 } from "./hooks";
 import { create } from "ipfs-http-client";
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Progress,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { Layout } from "./components/Layout/Layout";
 import { MintModal } from "./components/MintModal/MintModal";
 import axios from "axios";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Planet3D } from "./components/Planet3D/Planet3D";
-const { BufferList } = require("bl");
+
 // https://www.npmjs.com/package/ipfs-http-client
 
 const ipfs = create({
@@ -230,18 +232,33 @@ function App(props) {
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourCollectibles, setYourCollectibles] = useState();
+  const [totalNoOfNfts, setTotalNoOfNfts] = useState();
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      const tot = await readContracts?.YourCollectible?.totalSupply();
+      if (tot !== totalNoOfNfts) {
+        setTotalNoOfNfts(tot);
+      }
+    })();
+  }, [address, yourBalance]);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
-      for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
+
+      for (let tokenIndex = 0; tokenIndex < totalNoOfNfts; tokenIndex++) {
         try {
-          console.log("GEtting token index", tokenIndex);
-          const tokenId =
-            await readContracts.YourCollectible.tokenOfOwnerByIndex(
-              address,
-              tokenIndex
-            );
+          // console.log(
+          //   "Getting token index",
+          //   tokenIndex,
+          //   balance.toString(),
+          //   tot.toString()
+          // );
+          const tokenId = await readContracts.YourCollectible.tokenByIndex(
+            tokenIndex
+          );
           console.log("tokenId", tokenId, tokenIndex);
           const tokenURI = await readContracts.YourCollectible.tokenURI(
             tokenId
@@ -252,11 +269,19 @@ function App(props) {
 
           if (
             resfromURI?.data &&
+            resfromURI.data?.symbol === "PWS" &&
             !collectibleUpdate.some(
               (col) => col.imageURL === resfromURI.data.imageURL
             )
           ) {
             collectibleUpdate.push(resfromURI.data);
+          }
+
+          if (collectibleUpdate.length % 4 === 0) {
+            setYourCollectibles([...collectibleUpdate]);
+          }
+          if (collectibleUpdate.length <= 0) {
+            setProgress((tokenIndex / totalNoOfNfts) * 100);
           }
         } catch (e) {
           console.log(e);
@@ -265,7 +290,7 @@ function App(props) {
       setYourCollectibles(collectibleUpdate);
     };
     updateYourCollectibles();
-  }, [address, yourBalance]);
+  }, [totalNoOfNfts]);
 
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
@@ -320,80 +345,80 @@ function App(props) {
   // }, [setRoute]);
   // ]);
 
-  let networkDisplay = "";
-  if (localChainId && selectedChainId && localChainId !== selectedChainId) {
-    const networkSelected = NETWORK(selectedChainId);
-    const networkLocal = NETWORK(localChainId);
-    if (selectedChainId === 1337 && localChainId === 31337) {
-      networkDisplay = (
-        <div
-          style={{
-            zIndex: 2,
-            position: "absolute",
-            right: 0,
-            top: 60,
-            padding: 16,
-          }}
-        >
-          <Alert
-            message="⚠️ Wrong Network ID"
-            description={
-              <div>
-                You have <b>chain id 1337</b> for localhost and you need to
-                change it to <b>31337</b> to work with HardHat.
-                <div>
-                  (MetaMask -&gt; Settings -&gt; Networks -&gt; Chain ID -&gt;
-                  31337)
-                </div>
-              </div>
-            }
-            type="error"
-            closable={false}
-          />
-        </div>
-      );
-    } else {
-      networkDisplay = (
-        <div
-          style={{
-            zIndex: 2,
-            position: "absolute",
-            right: 0,
-            top: 60,
-            padding: 16,
-          }}
-        >
-          <Alert
-            message="⚠️ Wrong Network"
-            description={
-              <div>
-                You have <b>{networkSelected && networkSelected.name}</b>{" "}
-                selected and you need to be on{" "}
-                <b>{networkLocal && networkLocal.name}</b>.
-              </div>
-            }
-            type="error"
-            closable={false}
-          />
-        </div>
-      );
-    }
-  } else {
-    networkDisplay = (
-      <div
-        style={{
-          zIndex: -1,
-          position: "absolute",
-          right: 154,
-          top: 28,
-          padding: 16,
-          color: targetNetwork.color,
-        }}
-      >
-        {targetNetwork.name}
-      </div>
-    );
-  }
+  // let networkDisplay = "";
+  // if (localChainId && selectedChainId && localChainId !== selectedChainId) {
+  //   const networkSelected = NETWORK(selectedChainId);
+  //   const networkLocal = NETWORK(localChainId);
+  //   if (selectedChainId === 1337 && localChainId === 31337) {
+  //     networkDisplay = (
+  //       <div
+  //         style={{
+  //           zIndex: 2,
+  //           position: "absolute",
+  //           right: 0,
+  //           top: 60,
+  //           padding: 16,
+  //         }}
+  //       >
+  //         <Alert
+  //           message="⚠️ Wrong Network ID"
+  //           description={
+  //             <div>
+  //               You have <b>chain id 1337</b> for localhost and you need to
+  //               change it to <b>31337</b> to work with HardHat.
+  //               <div>
+  //                 (MetaMask -&gt; Settings -&gt; Networks -&gt; Chain ID -&gt;
+  //                 31337)
+  //               </div>
+  //             </div>
+  //           }
+  //           type="error"
+  //           closable={false}
+  //         />
+  //       </div>
+  //     );
+  //   } else {
+  //     networkDisplay = (
+  //       <div
+  //         style={{
+  //           zIndex: 2,
+  //           position: "absolute",
+  //           right: 0,
+  //           top: 60,
+  //           padding: 16,
+  //         }}
+  //       >
+  //         <Alert
+  //           message="⚠️ Wrong Network"
+  //           description={
+  //             <div>
+  //               You have <b>{networkSelected && networkSelected.name}</b>{" "}
+  //               selected and you need to be on{" "}
+  //               <b>{networkLocal && networkLocal.name}</b>.
+  //             </div>
+  //           }
+  //           type="error"
+  //           closable={false}
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // } else {
+  //   networkDisplay = (
+  //     <div
+  //       style={{
+  //         zIndex: -1,
+  //         position: "absolute",
+  //         right: 154,
+  //         top: 28,
+  //         padding: 16,
+  //         color: targetNetwork.color,
+  //       }}
+  //     >
+  //       {targetNetwork.name}
+  //     </div>
+  //   );
+  // }
 
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
@@ -411,38 +436,38 @@ function App(props) {
   //   setRoute(window.location.pathname);
   // }, [setRoute]);
 
-  let faucetHint = "";
-  const faucetAvailable =
-    localProvider &&
-    localProvider.connection &&
-    targetNetwork.name == "localhost";
+  // let faucetHint = "";
+  // const faucetAvailable =
+  //   localProvider &&
+  //   localProvider.connection &&
+  //   targetNetwork.name == "localhost";
 
-  const [faucetClicked, setFaucetClicked] = useState(false);
-  if (
-    !faucetClicked &&
-    localProvider &&
-    localProvider._network &&
-    localProvider._network.chainId == 31337 &&
-    yourLocalBalance &&
-    formatEther(yourLocalBalance) <= 0
-  ) {
-    faucetHint = (
-      <div style={{ padding: 16 }}>
-        <Button
-          type="primary"
-          onClick={() => {
-            faucetTx({
-              to: address,
-              value: parseEther("0.01"),
-            });
-            setFaucetClicked(true);
-          }}
-        >
-          💰 Grab funds from the faucet ⛽️
-        </Button>
-      </div>
-    );
-  }
+  // const [faucetClicked, setFaucetClicked] = useState(false);
+  // if (
+  //   !faucetClicked &&
+  //   localProvider &&
+  //   localProvider._network &&
+  //   localProvider._network.chainId == 31337 &&
+  //   yourLocalBalance &&
+  //   formatEther(yourLocalBalance) <= 0
+  // ) {
+  //   faucetHint = (
+  //     <div style={{ padding: 16 }}>
+  //       <Button
+  //         type="primary"
+  //         onClick={() => {
+  //           faucetTx({
+  //             to: address,
+  //             value: parseEther("0.01"),
+  //           });
+  //           setFaucetClicked(true);
+  //         }}
+  //       >
+  //         💰 Grab funds from the faucet ⛽️
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   const [planetDetails, setPlanetDetails] = useState(null);
   const [generating, setGenerating] = useState(false);
@@ -501,30 +526,31 @@ function App(props) {
               logoutOfWeb3Modal={logoutOfWeb3Modal}
             />
             {/* {accountState.account} */}
-            <MintModal
-              generating={generating}
-              planetDetails={planetDetails}
-              regenerationHandler={regenerationHandler}
-              ipfsUploadHandler={ipfsUploadHandler}
-              onClick={planetDetails ? () => {} : getPlanetImage}
-              ensProvider={mainnetProvider}
-              provider={userProvider}
-              writeContracts={writeContracts}
-              address={address}
-              uploading={uploading}
-            />
-            <SimpleGrid
-              minChildWidth="300px"
-              gap="1rem"
-              w="100%"
-              maxW="1200px"
-              p="3rem 0rem"
-            >
-              {yourCollectibles.map(({ symbol, imageURL }) => {
-                if (symbol?.toUpperCase() === "PWS") {
-                  return (
-                    <Flex key={imageURL} justifyContent="center" minH="300px">
-                      {/* <Flex
+            {yourCollectibles?.length > 0 ? (
+              <>
+                <MintModal
+                  generating={generating}
+                  planetDetails={planetDetails}
+                  regenerationHandler={regenerationHandler}
+                  ipfsUploadHandler={ipfsUploadHandler}
+                  onClick={planetDetails ? () => {} : getPlanetImage}
+                  ensProvider={mainnetProvider}
+                  provider={userProvider}
+                  writeContracts={writeContracts}
+                  address={address}
+                  uploading={uploading}
+                />
+                <SimpleGrid
+                  minChildWidth="300px"
+                  gap="1rem"
+                  w="100%"
+                  maxW="1200px"
+                  p="3rem 0rem"
+                >
+                  {yourCollectibles.map(({ symbol, imageURL }) => {
+                    return (
+                      <Flex key={imageURL} justifyContent="center" minH="300px">
+                        {/* <Flex
                         bg={`url(${imageURL})`}
                         h="250px"
                         w="250px"
@@ -532,13 +558,32 @@ function App(props) {
                         bgPos="center"
                         borderRadius="50%"
                       ></Flex> */}
-                      <Planet3D planetLink={imageURL} />
-                    </Flex>
-                  );
-                }
-                return "";
-              })}
-            </SimpleGrid>
+                        <Planet3D scale={2} planetLink={imageURL} />
+                      </Flex>
+                    );
+                  })}
+                </SimpleGrid>
+              </>
+            ) : (
+              <>
+                <Flex
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDir="column"
+                  bg="black.1000"
+                  w="100vw"
+                  h="100vh"
+                  pos="absolute"
+                  top="0"
+                  left="0"
+                >
+                  <Image src="/images/loader2.gif" w="92vw" maxW="300px" />
+                  <Box mt="2rem" w="90vw" maxW="400px" maxW="300px">
+                    <Progress value={progress} size="xs" colorScheme="teal" />
+                  </Box>
+                </Flex>
+              </>
+            )}
           </Layout>
         )}
       </>

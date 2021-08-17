@@ -1,6 +1,6 @@
+import { useToast } from "@chakra-ui/react";
 import { hexlify } from "@ethersproject/bytes";
 import { parseUnits } from "@ethersproject/units";
-import { notification } from "antd";
 import Notify from "bnc-notify";
 import { BLOCKNATIVE_DAPPID } from "../constants";
 
@@ -9,6 +9,7 @@ import { BLOCKNATIVE_DAPPID } from "../constants";
 // https://docs.blocknative.com/notify
 
 export default function Transactor(provider, gasPrice, etherscan) {
+  const toast = useToast()
   if (typeof provider !== "undefined") {
     // eslint-disable-next-line consistent-return
     return async tx => {
@@ -63,21 +64,25 @@ export default function Transactor(provider, gasPrice, etherscan) {
             };
           });
         } else {
-          notification.info({
-            message: "Local Transaction Sent",
-            description: result.hash,
-            placement: "bottomRight",
-          });
+          toast({
+            description: "Local Transaction Sent",
+            status: "info",
+            duration: 4000,
+            isClosable: true,
+          })
         }
 
         return result;
       } catch (e) {
         console.log(e);
         console.log("Transaction Error:", e.message);
-        notification.error({
-          message: "Transaction Error",
+        toast({
+          title: "Transaction Error",
           description: e.message,
-        });
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        })
       }
     };
   }
