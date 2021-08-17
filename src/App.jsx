@@ -523,7 +523,7 @@ function App(props) {
               {yourCollectibles.map(({ symbol, imageURL }) => {
                 if (symbol?.toUpperCase() === "PWS") {
                   return (
-                    <Flex justifyContent="center" minH="300px">
+                    <Flex key={imageURL} justifyContent="center" minH="300px">
                       {/* <Flex
                         bg={`url(${imageURL})`}
                         h="250px"

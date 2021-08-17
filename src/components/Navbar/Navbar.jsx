@@ -71,7 +71,7 @@ export function Navbar({
   return (
     <>
       <chakra.header
-        bg={"transparent"}
+        bg="black.1000"
         w="full"
         px={{ base: 2, sm: 4 }}
         py={4}
@@ -80,12 +80,13 @@ export function Navbar({
         position="fixed"
         top="0"
         left="0"
+        maxW="100vw"
       >
         <Flex
           alignItems="center"
           justifyContent="space-between"
           mx="auto"
-          maxWidth="1500px"
+          maxW="1500px"
         >
           <Flex>
             <chakra.a

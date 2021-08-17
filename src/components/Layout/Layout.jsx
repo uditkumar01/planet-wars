@@ -9,6 +9,8 @@ export function Layout({ children }) {
         bg="black.1000"
         minH="100vh"
         minW="100vw"
+        maxW="100vw"
+        overflow="hidden"
       >
         {children}
       </Flex>
