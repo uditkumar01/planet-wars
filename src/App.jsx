@@ -231,8 +231,8 @@ function App(props) {
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
-  const [yourCollectibles, setYourCollectibles] = useState();
-  const [totalNoOfNfts, setTotalNoOfNfts] = useState();
+  const [yourCollectibles, setYourCollectibles] = useState([]);
+  const [totalNoOfNfts, setTotalNoOfNfts] = useState(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -246,21 +246,56 @@ function App(props) {
   }, [address, yourBalance]);
 
   useEffect(() => {
-    const updateYourCollectibles = async () => {
-      const collectibleUpdate = [];
-      console.log("UPDATING...");
-      for (let tokenIndex = 65; tokenIndex < totalNoOfNfts; tokenIndex++) {
+    if (yourCollectibles.length <= 0) {
+      const updateYourCollectibles = async () => {
+        const collectibleUpdate = [];
+        console.log("UPDATING...");
+        for (let tokenIndex = 65; tokenIndex < totalNoOfNfts; tokenIndex++) {
+          try {
+            const tokenId = await readContracts.YourCollectible.tokenByIndex(
+              tokenIndex
+            );
+            console.log(tokenIndex);
+            const tokenURI = await readContracts.YourCollectible.tokenURI(
+              tokenId
+            );
+            // console.log("tokenURI", tokenURI);
+
+            const resfromURI = await axios.get(tokenURI);
+
+            if (
+              resfromURI?.data &&
+              resfromURI.data?.symbol === "PWS" &&
+              !collectibleUpdate.some(
+                (col) => col.imageURL === resfromURI.data.imageURL
+              )
+            ) {
+              console.log(tokenIndex, "PLANETS INDEX");
+              collectibleUpdate.push(resfromURI.data);
+            }
+
+            if (collectibleUpdate.length % 4 === 0) {
+              setYourCollectibles([...collectibleUpdate]);
+            }
+            if (yourCollectibles.length <= 0) {
+              setProgress((tokenIndex / totalNoOfNfts) * 100);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        setYourCollectibles(collectibleUpdate);
+      };
+      updateYourCollectibles();
+    } else {
+      (async () => {
+        const nfts = await readContracts?.YourCollectible?.totalSupply();
+        console.log("new planet minted");
         try {
-          // console.log(
-          //   "Getting token index",
-          //   tokenIndex,
-          //   balance.toString(),
-          //   tot.toString()
-          // );
           const tokenId = await readContracts.YourCollectible.tokenByIndex(
-            tokenIndex
+            totalNoOfNfts - 1
           );
-          console.log(tokenIndex);
+          console.log(totalNoOfNfts - 1);
           const tokenURI = await readContracts.YourCollectible.tokenURI(
             tokenId
           );
@@ -271,27 +306,19 @@ function App(props) {
           if (
             resfromURI?.data &&
             resfromURI.data?.symbol === "PWS" &&
-            !collectibleUpdate.some(
+            !yourCollectibles.some(
               (col) => col.imageURL === resfromURI.data.imageURL
             )
           ) {
-            console.log(tokenIndex, "PLANETS INDEX");
-            collectibleUpdate.push(resfromURI.data);
-          }
-
-          if (collectibleUpdate.length % 4 === 0) {
-            setYourCollectibles([...collectibleUpdate]);
-          }
-          if (yourCollectibles.length <= 0) {
-            setProgress((tokenIndex / totalNoOfNfts) * 100);
+            setYourCollectibles((prevYourCollectibles) => {
+              return [...prevYourCollectibles, resfromURI.data];
+            });
           }
         } catch (e) {
           console.log(e);
         }
-      }
-      setYourCollectibles(collectibleUpdate);
-    };
-    updateYourCollectibles();
+      })();
+    }
   }, [totalNoOfNfts]);
 
   /*
@@ -579,7 +606,13 @@ function App(props) {
                 >
                   <Image src="/images/loader2.gif" w="92vw" maxW="300px" />
                   <Box mt="2rem" w="90vw" maxW="400px" maxW="300px">
-                    <Progress hasStripe={true} isAnimated={true} value={progress} size="xs" colorScheme="teal" />
+                    <Progress
+                      hasStripe={true}
+                      isAnimated={true}
+                      value={progress}
+                      size="xs"
+                      colorScheme="teal"
+                    />
                   </Box>
                 </Flex>
               </>
