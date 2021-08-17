@@ -239,6 +239,7 @@ function App(props) {
     (async () => {
       const tot = await readContracts?.YourCollectible?.totalSupply();
       if (tot !== totalNoOfNfts) {
+        console.log("new planet minted");
         setTotalNoOfNfts(tot);
       }
     })();
@@ -247,8 +248,8 @@ function App(props) {
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
-
-      for (let tokenIndex = 0; tokenIndex < totalNoOfNfts; tokenIndex++) {
+      console.log("UPDATING...");
+      for (let tokenIndex = 65; tokenIndex < totalNoOfNfts; tokenIndex++) {
         try {
           // console.log(
           //   "Getting token index",
@@ -259,11 +260,11 @@ function App(props) {
           const tokenId = await readContracts.YourCollectible.tokenByIndex(
             tokenIndex
           );
-          console.log("tokenId", tokenId, tokenIndex);
+          console.log(tokenIndex);
           const tokenURI = await readContracts.YourCollectible.tokenURI(
             tokenId
           );
-          console.log("tokenURI", tokenURI);
+          // console.log("tokenURI", tokenURI);
 
           const resfromURI = await axios.get(tokenURI);
 
@@ -274,13 +275,14 @@ function App(props) {
               (col) => col.imageURL === resfromURI.data.imageURL
             )
           ) {
+            console.log(tokenIndex, "PLANETS INDEX");
             collectibleUpdate.push(resfromURI.data);
           }
 
           if (collectibleUpdate.length % 4 === 0) {
             setYourCollectibles([...collectibleUpdate]);
           }
-          if (collectibleUpdate.length <= 0) {
+          if (yourCollectibles.length <= 0) {
             setProgress((tokenIndex / totalNoOfNfts) * 100);
           }
         } catch (e) {
@@ -511,7 +513,7 @@ function App(props) {
     getPlanetImage();
   }
 
-  console.log({ yourCollectibles });
+  // console.log({ yourCollectibles });
 
   return (
     <div className="App">
@@ -534,8 +536,6 @@ function App(props) {
                   regenerationHandler={regenerationHandler}
                   ipfsUploadHandler={ipfsUploadHandler}
                   onClick={planetDetails ? () => {} : getPlanetImage}
-                  ensProvider={mainnetProvider}
-                  provider={userProvider}
                   writeContracts={writeContracts}
                   address={address}
                   uploading={uploading}
@@ -545,7 +545,7 @@ function App(props) {
                   gap="1rem"
                   w="100%"
                   maxW="1200px"
-                  p="3rem 0rem"
+                  p="1rem 0rem"
                 >
                   {yourCollectibles.map(({ symbol, imageURL }) => {
                     return (
@@ -579,7 +579,7 @@ function App(props) {
                 >
                   <Image src="/images/loader2.gif" w="92vw" maxW="300px" />
                   <Box mt="2rem" w="90vw" maxW="400px" maxW="300px">
-                    <Progress value={progress} size="xs" colorScheme="teal" />
+                    <Progress hasStripe={true} isAnimated={true} value={progress} size="xs" colorScheme="teal" />
                   </Box>
                 </Flex>
               </>

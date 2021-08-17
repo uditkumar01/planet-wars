@@ -29,14 +29,13 @@ export function MintModal({
   regenerationHandler,
   ipfsUploadHandler,
   onClick,
-  ensProvider,
-  provider,
   writeContracts,
   address,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [inProgress, setInProgress] = useState(false);
   const [ipfsHash, setIpfsHash] = useState(null);
+
   async function mintStateHandler() {
     setInProgress(true);
     if (!ipfsHash) {
@@ -47,7 +46,16 @@ export function MintModal({
     }
     setInProgress(false);
   }
-  console.log({ ipfsHash }, "MINT MODAL");
+  // console.log(
+  //   generating,
+  //   planetDetails,
+  //   regenerationHandler,
+  //   ipfsUploadHandler,
+  //   onClick,
+  //   writeContracts,
+  //   address,
+  //   "MINT MODAL"
+  // );
   return (
     <>
       <Button
