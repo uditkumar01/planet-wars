@@ -74,8 +74,8 @@ export function MintModal({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Mint Planet</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader color="whiteAlpha.700">Mint Planet</ModalHeader>
+          <ModalCloseButton color="whiteAlpha.400"/>
           <ModalBody>
             {generating ? (
               <Flex h="355px" justifyContent="center" alignItems="center">
@@ -112,7 +112,7 @@ export function MintModal({
                       planetDetails.properties.map(({ name, value, unit }) => {
                         return (
                           <Tr>
-                            <Td>{name}</Td>
+                            <Th color="whiteAlpha.700">{name}</Th>
                             <Td textAlign="right">
                               <Badge
                                 fontSize="0.76rem"

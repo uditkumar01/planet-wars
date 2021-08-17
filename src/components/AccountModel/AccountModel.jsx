@@ -36,12 +36,12 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
         isCentered
         onClose={onClose}
         isOpen={isOpen}
-        motionPreset="slideInBottom"
+        motionPreset="slideInBottom"bg="black.1000"
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Account</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader color="whiteAlpha.700">Account</ModalHeader>
+          <ModalCloseButton color="whiteAlpha.400" />
           <ModalBody>
             <Flex minH="355px" mb="1rem" flexDir="column" alignItems="center">
               <Flex h="200px" w="200px" bgSize="cover" bgPos="center">
@@ -56,7 +56,7 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
               <Table size="sm" m="1rem 0">
                 <Tbody>
                   <Tr>
-                    <Th>Address</Th>
+                    <Th color="whiteAlpha.700">Address</Th>
                     <Td
                       whiteSpace="nowrap"
                       overflowWrap="break-word"
@@ -64,13 +64,14 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
                       maxW="100px"
                       overflow="hidden"
                       textOverflow="ellipsis"
+                      color="whiteAlpha.700"
                     >
                       {address}
                     </Td>
                   </Tr>
                   <Tr>
-                    <Th>Balance</Th>
-                    <Td>{yourBalance}</Td>
+                    <Th color="whiteAlpha.700">Balance</Th>
+                    <Td color="whiteAlpha.700">{yourBalance}</Td>
                   </Tr>
                 </Tbody>
                 <br />
