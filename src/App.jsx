@@ -569,7 +569,6 @@ function App(props) {
                 />
                 <SimpleGrid
                   minChildWidth="300px"
-                  gap="1rem"
                   w="100%"
                   maxW="1200px"
                   p="1rem 0rem"
@@ -582,6 +581,10 @@ function App(props) {
                           key={imageURL}
                           justifyContent="center"
                           minH="300px"
+                          m="1rem"
+                          borderRadius="8px"
+                          transition="all 0.2s"
+                          _hover={{ bg: "gray.700" }}
                         >
                           <Planet3D scale={2} planetLink={imageURL} />
                         </Flex>
