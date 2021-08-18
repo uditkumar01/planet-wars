@@ -121,7 +121,7 @@ export function MintModal({
                     {planetDetails &&
                       planetDetails.properties.map(({ name, value, unit }) => {
                         return (
-                          <Tr>
+                          <Tr key={name}>
                             <Th color="whiteAlpha.700">{name}</Th>
                             <Td textAlign="right">
                               <Badge

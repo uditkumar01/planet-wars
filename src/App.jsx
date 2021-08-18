@@ -38,6 +38,7 @@ import { MintModal } from "./components/MintModal/MintModal";
 import axios from "axios";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Planet3D } from "./components/Planet3D/Planet3D";
+import { PlanetModal } from "./components/PlanetModal/PlanetModal";
 
 // https://www.npmjs.com/package/ipfs-http-client
 
@@ -262,7 +263,7 @@ function App(props) {
             // console.log("tokenURI", tokenURI);
 
             const resfromURI = await axios.get(tokenURI);
-
+            console.log(resfromURI, "testing response");
             if (
               resfromURI?.data &&
               resfromURI.data?.symbol === "PWS" &&
@@ -302,7 +303,6 @@ function App(props) {
           // console.log("tokenURI", tokenURI);
 
           const resfromURI = await axios.get(tokenURI);
-
           if (
             resfromURI?.data &&
             resfromURI.data?.symbol === "PWS" &&
@@ -574,19 +574,18 @@ function App(props) {
                   maxW="1200px"
                   p="1rem 0rem"
                 >
-                  {yourCollectibles.map(({ symbol, imageURL }) => {
+                  {yourCollectibles.map((planetDetails) => {
+                    const { imageURL } = planetDetails;
                     return (
-                      <Flex key={imageURL} justifyContent="center" minH="300px">
-                        {/* <Flex
-                        bg={`url(${imageURL})`}
-                        h="250px"
-                        w="250px"
-                        bgSize="cover"
-                        bgPos="center"
-                        borderRadius="50%"
-                      ></Flex> */}
-                        <Planet3D scale={2} planetLink={imageURL} />
-                      </Flex>
+                      <PlanetModal planetDetails={planetDetails}>
+                        <Flex
+                          key={imageURL}
+                          justifyContent="center"
+                          minH="300px"
+                        >
+                          <Planet3D scale={2} planetLink={imageURL} />
+                        </Flex>
+                      </PlanetModal>
                     );
                   })}
                 </SimpleGrid>

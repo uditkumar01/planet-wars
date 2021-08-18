@@ -23,11 +23,13 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
   return (
     <>
       <Button
-        
         onClick={onOpen}
         colorScheme="teal"
         bg="brand.600"
         color="black.1000"
+        h={["30px", "40px"]}
+        w={["85px", "90px"]}
+        fontSize={["sm", "md"]}
         _hover={{ bg: "brand.500" }}
       >
         Account
@@ -36,7 +38,8 @@ export function AccountModel({ address, yourBalance, logoutOfWeb3Modal }) {
         isCentered
         onClose={onClose}
         isOpen={isOpen}
-        motionPreset="slideInBottom"bg="black.1000"
+        motionPreset="slideInBottom"
+        bg="black.1000"
       >
         <ModalOverlay />
         <ModalContent>
