@@ -26,7 +26,7 @@ export function PlanetModal({ children, planetDetails }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Flex onClick={onOpen} cursor="pointer">
+      <Flex justifyContent="center" onClick={onOpen} cursor="pointer">
         {children}
       </Flex>
 

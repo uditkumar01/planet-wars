@@ -32,6 +32,7 @@ import {
   Image,
   Progress,
   SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import { Layout } from "./components/Layout/Layout";
 import { MintModal } from "./components/MintModal/MintModal";
@@ -571,15 +572,18 @@ function App(props) {
                   minChildWidth="300px"
                   w="100%"
                   maxW="1200px"
-                  p="1rem 0rem"
+                  p="0rem 0rem"
                 >
                   {yourCollectibles.map((planetDetails) => {
-                    const { imageURL } = planetDetails;
+                    const { imageURL, planetName } = planetDetails;
                     return (
-                      <PlanetModal planetDetails={planetDetails}>
+                      <PlanetModal
+                        key={planetName}
+                        planetDetails={planetDetails}
+                      >
                         <Flex
-                          key={imageURL}
-                          justifyContent="center"
+                          alignItems="center"
+                          flexDir="column"
                           minH="300px"
                           m="1rem"
                           borderRadius="8px"
@@ -587,6 +591,14 @@ function App(props) {
                           _hover={{ bg: "gray.700" }}
                         >
                           <Planet3D scale={2} planetLink={imageURL} />
+                          <Text
+                            fontSize="1.5rem"
+                            mb="1rem"
+                            fontWeight="bold"
+                            color="black.500"
+                          >
+                            {planetName.split("-").join(" ")}
+                          </Text>
                         </Flex>
                       </PlanetModal>
                     );
