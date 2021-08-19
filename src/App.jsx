@@ -592,7 +592,7 @@ function App(props) {
                         >
                           <Planet3D scale={2} planetLink={imageURL} />
                           <Text
-                            fontSize="1.5rem"
+                            fontSize="1.2rem"
                             mb="1rem"
                             fontWeight="bold"
                             color="black.500"
